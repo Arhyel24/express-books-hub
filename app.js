@@ -7,6 +7,7 @@ var mongoose = require("mongoose");
 var session = require("express-session");
 var flash = require("connect-flash");
 var bodyParser = require("body-parser");
+var MongoStore = require("connect-mongo");
 var expressLayouts = require("express-ejs-layouts");
 
 var bookRoutes = require('./routes/book');
@@ -14,7 +15,7 @@ var userRoutes = require('./routes/user');
 
 var app = express();
 
-mongoose.connect('mongodb://localhost:27017/bookstore')
+mongoose.connect('mongodb+srv://arhyelphilip024:Ferry@myworks.yl0en.mongodb.net/bookstore?retryWrites=true&w=majority&appName=myworks')
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
@@ -33,9 +34,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     secret: 'your_secret_key',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: 'mongodb+srv://arhyelphilip024:Ferry@myworks.yl0en.mongodb.net/bookstore?retryWrites=true&w=majority&appName=myworks' }),
+    cookie: { secure: false }
 }));
 app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 app.use('/', userRoutes);
 app.use('/books', bookRoutes);

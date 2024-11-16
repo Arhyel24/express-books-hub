@@ -11,14 +11,14 @@ router.get('/', async (req, res) => {
 
 // Create a new book
 router.get('/new', (req, res) => {
-    if (!req.session.userId) {
+    if (!req.session.user) {
         return res.redirect('/login'); // Redirect to login if not authenticated
     }
     res.render('newBook');
 });
 
 router.post('/', async (req, res) => {
-    if (!req.session.userId) {
+    if (!req.session.user) {
         return res.redirect('/login'); // Redirect to login if not authenticated
     }
     
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         description, 
         author, 
         category, 
-        uploadedBy: req.session.userId, // Set uploadedBy to the current user's ID
+        uploadedBy: req.session.user.userId, // Set uploadedBy to the current user's ID
         imageUrl, 
         bookUrl 
     });
@@ -46,6 +46,18 @@ router.post('/:id', async (req, res) => {
     const { title, description, author, category, imageUrl, bookUrl } = req.body;
     await Book.findByIdAndUpdate(req.params.id, { title, description, author, category, imageUrl, bookUrl });
     res.redirect('/books');
+});
+
+router.get('/:id/view', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id).populate('uploadedBy');
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+        res.render('viewBook', { book, currentUserId: req.session.user.userId }); // Pass the current user ID
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
 });
 
 // Delete a book

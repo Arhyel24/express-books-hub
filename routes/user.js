@@ -5,6 +5,9 @@ const router = express.Router();
 
 // Registration
 router.get('/register', (req, res) => {
+    if (req.session.user) {
+	res.redirect('/books');
+    }
     res.render('register');
 });
 
@@ -18,6 +21,9 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.get('/login', (req, res) => {
+	if (req.session.user) { 
+		res.redirect('/books');
+	}
     res.render('login');
 });
 
@@ -25,7 +31,8 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
     if (user && await bcrypt.compare(password, user.password)) {
-        req.session.userId = user._id;
+        req.session.user = { username: user.username, userId: user._id}
+
         res.redirect('/books');
     } else {
         res.redirect('/login');
@@ -34,7 +41,7 @@ router.post('/login', async (req, res) => {
 
 // Logout
 router.get('/logout', (req, res) => {
-    req.session.userId = null;
+    req.session.user = null;
     res.redirect('/');
 });
 
