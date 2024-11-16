@@ -36,7 +36,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb+srv://arhyelphilip024:Ferry@myworks.yl0en.mongodb.net/bookstore?retryWrites=true&w=majority&appName=myworks' }),
-    cookie: { secure: false }
+    cookie: { secure: true }
 }));
 app.use(flash());
 
