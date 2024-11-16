@@ -1,0 +1,18 @@
+<% layout('layout') %>
+<h1 class="text-3xl font-bold text-center my-8">Books</h1>
+<a href="/books/new" class="bg-blue-500 text-white py-2 px-4 rounded">Add New Book</a>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+    <% books.forEach(book => { %>
+        <div class="bg-white rounded-lg shadow-lg p-4">
+            <img src="<%= book.imageUrl %>" alt="Book Cover" class="rounded-t-lg w-full">
+            <h2 class="text-xl font-semibold mt-2"><%= book.title %></h2>
+            <p class="text-gray-600">Author: <%= book.author %></p>
+            <p class="text-gray-600">Uploaded by: <%= book.uploadedBy.username %></p> <!-- Display the username -->
+            <p class="mt-2"><%= book.description %></p>
+            <form action="/books/<%= book._id %>/delete" method="POST" class="mt-4">
+                <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded">Delete</button>
+            </form>
+            <a href="/books/<%= book._id %>/edit" class="bg-yellow-500 text-white py-2 px-4 rounded mt-2 inline-block">Edit</a>
+        </div>
+    <% }); %>
+</div>
