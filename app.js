@@ -36,12 +36,14 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: 'mongodb+srv://arhyelphilip024:Ferry@myworks.yl0en.mongodb.net/bookstore?retryWrites=true&w=majority&appName=myworks' }),
-    cookie: { secure: true }
+    cookie: { secure: false }
 }));
 app.use(flash());
 
 app.use((req, res, next) => {
+	console.log(req.session.user)
     res.locals.user = req.session.user || null;
+	console.log(req.session.user)
     next();
 });
 

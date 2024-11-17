@@ -8,6 +8,8 @@ router.get('/register', (req, res) => {
     if (req.session.user) {
 	res.redirect('/books');
     }
+
+	//console.log(req.session)
     res.render('register');
 });
 
@@ -21,7 +23,10 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.get('/login', (req, res) => {
-	if (req.session.user) { 
+
+	//console.log(req.session);
+
+	if (req.session.user) { i
 		res.redirect('/books');
 	}
     res.render('login');
@@ -33,7 +38,8 @@ router.post('/login', async (req, res) => {
     if (user && await bcrypt.compare(password, user.password)) {
         req.session.user = { username: user.username, userId: user._id}
 
-        res.redirect('/books');
+        console.log(req.session)
+	res.redirect('/books');
     } else {
         res.redirect('/login');
     }
