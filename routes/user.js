@@ -26,7 +26,7 @@ router.get('/login', (req, res) => {
 
 	//console.log(req.session);
 
-	if (req.session.user) { i
+	if (req.session.user) { 
 		res.redirect('/books');
 	}
     res.render('login');

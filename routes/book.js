@@ -33,7 +33,9 @@ router.post('/', async (req, res) => {
         bookUrl 
     });
     await book.save();
-    res.redirect('/books');
+    //res.redirect('/books');
+    return res.status(201).json({ success: true, message: 'Book added successfully!' });
+
 });
 
 // Edit a book
