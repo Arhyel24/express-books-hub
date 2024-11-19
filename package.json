@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "postcss public/stylesheets/tailwind.css -o public/stylesheets/style.css && nodemon ./bin/www",
+    "dev": "postcss public/stylesheets/tailwind.css -o public/stylesheets/style.css && node app.js",
     "build": "postcss public/stylesheets/tailwind.css -o public/stylesheets/style.css",
-    "start": "nodemon ./bin/www",
+    "start": "node app.js",
     "tailwind:css": "postcss public/stylesheets/tailwind.css -o public/stylesheets/style.css"
   },
   "engines" : {
