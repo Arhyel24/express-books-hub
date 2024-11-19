@@ -45,23 +45,12 @@
             <div id="message" class="ml-4"></div>
         </div>
     </form>
-
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-        <div class="loader border-t-4 border-b-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
-    </div>
 </div>
-
-<style>
-    .loader {
-        border-top-color: transparent;
-    }
-</style>
 
 <script>
     const apiKey = 'c512e5d79c9b393786fee62ff368b800'; // Replace with your ImgBB API key
     const imgApiUrl = 'https://api.imgbb.com/1/upload';
-    const dropboxAccessToken = 'sl.CA5rz bAQ3tioTr7w81WSPPDC1qpbTxLZAvl_e0Lg0L8xlSvICyQNhuQHvMxVn1Y1ncwE7jq27SoDqzyEHCFdjWNEdRuWf3aFgzMqk3yKt42-NI7wI903XdY1eCocQ41rOA4IHZc4LjvT'; // Your Dropbox access token
+    const dropboxAccessToken = 'sl.CA5rzbAQ3tioTr7w81WSPPDC1qpbTxLZAvl_e0Lg0L8xlSvICyQNhuQHvMxVn1Y1ncwE7jq27SoDqzyEHCFdjWNEdRuWf3aFgzMqk3yKt42-NI7wI903XdY1eCocQ41rOA4IHZc4LjvT';
     let selectedImageFile;
     let selectedPdfFile;
 
@@ -75,7 +64,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 preview.src = e.target.result;
-                imagePreview.classList.remove('hidden');
+                imagePreview.classList.remove ('hidden');
             }
             reader.readAsDataURL(selectedImageFile);
         }
@@ -94,9 +83,6 @@
             alert('Please select a PDF file before adding a book.');
             return;
         }
-
-        // Show loading spinner
-        document.getElementById('loadingSpinner').classList.remove('hidden');
 
         const imgFormData = new FormData();
         imgFormData.append('image', selectedImageFile);
@@ -134,9 +120,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Hide loading spinner
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-
                     if (data.id) {
                         // Now send the book data along with the image URL to your backend
                         const bookData = {
@@ -145,7 +128,7 @@
                             description: document.getElementById('description').value,
                             category: document.getElementById('category').value,
                             imageUrl: imageUrl,
-                            pdfUrl: 'https://www.dropbox.com/s/' + data.id // Construct the PDF URL
+                            bookUrl: 'https://www.dropbox.com/s/' + data.id // Construct the PDF URL
                         };
 
                         // Send the book data to your backend
@@ -174,23 +157,13 @@
                         displayMessage('Failed to upload PDF.', 'error');
                     }
                 })
-                .catch(error => {
-                    // Hide loading spinner
-                    document.getElementById('loadingSpinner').classList.add('hidden');
-                    console.error('Error uploading PDF:', error);
-                });
+                .catch(error => console.error('Error uploading PDF:', error));
             } else {
-                // Hide loading spinner
-                document.getElement .getElementById('loadingSpinner').classList.add('hidden');
                 console.error('Error uploading image:', data.error);
                 displayMessage('Failed to upload image.', 'error');
             }
         })
-        .catch(error => {
-            // Hide loading spinner
-            document.getElementById('loadingSpinner').classList.add('hidden');
-            console.error('Error uploading image:', error);
-        });
+        .catch(error => console.error('Error uploading image:', error));
     });
 
     function displayMessage(message, type) {
